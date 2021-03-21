@@ -143,6 +143,14 @@ for (i in 1:nrow(df_pisco)) {
         rmse_winter = stat_gpm$RMSE[2],
         rmse_spring = stat_gpm$RMSE[3],
         rmse_summer = stat_gpm$RMSE[4],
+        mb_autumn = stat_gpm$MB[1],
+        mb_winter = stat_gpm$MB[2],
+        mb_spring = stat_gpm$MB[3],
+        mb_summer = stat_gpm$MB[4],
+        nmb_autumn = stat_gpm$NMB[1],
+        nmb_winter = stat_gpm$NMB[2],
+        nmb_spring = stat_gpm$NMB[3],
+        nmb_summer = stat_gpm$NMB[4]
       )
 
     tbl_trmm <-
@@ -163,6 +171,14 @@ for (i in 1:nrow(df_pisco)) {
         rmse_winter = stat_trmm$RMSE[2],
         rmse_spring = stat_trmm$RMSE[3],
         rmse_summer = stat_trmm$RMSE[4],
+        mb_autumn = stat_trmm$MB[1],
+        mb_winter = stat_trmm$MB[2],
+        mb_spring = stat_trmm$MB[3],
+        mb_summer = stat_trmm$MB[4],
+        nmb_autumn = stat_trmm$NMB[1],
+        nmb_winter = stat_trmm$NMB[2],
+        nmb_spring = stat_trmm$NMB[3],
+        nmb_summer = stat_trmm$NMB[4]
       )
   } else {
     tbl_gpm <-
@@ -172,7 +188,9 @@ for (i in 1:nrow(df_pisco)) {
           stat_gpm$IOA,
           stat_gpm$r,
           stat_gpm$COE,
-          stat_gpm$RMSE
+          stat_gpm$RMSE,
+          stat_gpm$MB,
+          stat_gpm$NMB
         )
       )
 
@@ -183,7 +201,9 @@ for (i in 1:nrow(df_pisco)) {
           stat_trmm$IOA,
           stat_trmm$r,
           stat_trmm$COE,
-          stat_trmm$RMSE
+          stat_trmm$RMSE,
+          stat_trmm$MB,
+          stat_trmm$NMB
         )
       )
   }
@@ -236,4 +256,4 @@ tbl_to_raster <- function(n, table, ref, versus) {
 load("data/rdata/tbl_gpm.RData")
 load("data/rdata/tbl_trmm.RData")
 #   apply function
-sapply(1:16, FUN = tbl_to_raster, tbl_trmm, pisco, "trmm_vs_pisco")
+sapply(1:24, FUN = tbl_to_raster, tbl_gpm, pisco, "gpm_vs_pisco")
