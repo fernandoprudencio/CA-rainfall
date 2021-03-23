@@ -1,9 +1,5 @@
 #' @title
-#' Plot the spatial distribution of GVMI an GVMI anomalies
-#'
-#' @description
-#' this script plots, as monitoring, the spatial distribution of GMVI and GVMI
-#'   anomalies for each month of the current year
+#' Plot the spatial distribution of rainfall (PISCO, GPM, TRMM)
 #'
 #' @author Fernando Prudencio
 
@@ -71,30 +67,37 @@ sp.andes <- as(st_geometry(sf.andes), Class = "Spatial")
 # )
 
 #' LOAD RASTER DATA
-index <-
-  brick("data/raster/PISCOp_v2.1.1_clim_1981-2017.nc") %>%
-  sum(na.rm = T) %>%
-  # raster::crop(sf.world) %>%
+pisco <-
+  brick("data/raster/pp/pisco/clim/pisco_clim_yearly.tif") %>%
   raster::mask(sf.world)
 
-#' DEFINE INTERVAL OF VALUES
-# intrv <- c(seq(0, .02, .005), seq(.03, .1, .01), seq(.12, .24, .02))
-# intrv.lbl <- c(0, .02, .06, .1, .16, .24)
+gpm <-
+  brick("data/raster/pp/gpm/clim/gpm_clim_yearly.tif") %>%
+  raster::mask(sf.world)
 
-intrv <- c(seq(0, 7000, 500), 7600)
-intrv.lbl <- c(seq(0, 7000, 1500), 7600)
+trmm <-
+  brick("data/raster/pp/trmm/clim/trmm_clim_yearly.tif") %>%
+  raster::mask(sf.world)
+
+#' STACK RASTER
+index <- raster::stack(pisco, gpm, trmm)
+
+#' DEFINE INTERVAL OF VALUES
+intrv <- c(seq(0, 6000, 500))
+intrv.lbl <- c(seq(0, 6000, 1000))
 
 #' BUILD PLOT
 #'   Define color palette
-cb.palette <- cptcity::cpt("wkp_precip_wiki_precip_mm")
-# cptcity::find_cpt("precip_diff_12lev")
+cb.palette <- cptcity::cpt("ncl_precip_11lev")
+# cptcity::find_cpt("precip_11lev")
 
 #'   Define plot name
 name <- "export/pp_map.png"
 #'   Save plot
-png(name, width = 20, height = 10, units = "cm", res = 500)
+png(name, width = 60, height = 10, units = "cm", res = 500)
 
 levelplot(index,
+  names.attr = c("PISCO v2p1", "TRMM 3B42RT", "GPM IMERG 3b"),
   par.strip.text = list(cex = .8, lines = 1.5), # header size for each map
   # layout = c(4, 1), # define number of row and colums
   scales = list(
@@ -110,11 +113,11 @@ levelplot(index,
   col.regions = cb.palette,
   margin = F,
   pretty = T,
-  maxpixels = 15e4, # 15e6
+  maxpixels = 15e6,
   at = intrv,
   colorkey = list(
-    at = intrv, height = 1, width = 1.1,
-    space = "top", tck = .3, # location of legend
+    at = intrv, height = .8, width = 1.1,
+    space = "bottom", tck = .3, # location of legend
     labels = list(at = intrv.lbl, cex = .7),
     font = list(family = "Source Sans Pro"),
     axis.line = list(lwd = 1, col = "black")
@@ -138,9 +141,21 @@ levelplot(index,
   par.sub.text = list(fontfamily = "Source Sans Pro")
 ) +
   latticeExtra::layer(
-    sp.lines(sp.world, col = "black", lwd = .5),
+    sp.lines(sp.world, col = "black", lwd = .7),
     sp.lines(sp.andes, col = "black", lwd = .7)
   )
+
+grid::grid.text(
+  "[mm/year]",
+  y = unit(.103, "npc"),
+  rot = 0, x = unit(.387, "npc"),
+  gp = gpar(
+    fontsize = 8,
+    # fontface = "bold",
+    fontfamily = "Source Sans Pro",
+    col = "black"
+  )
+)
 
 #' CLOSE THE SAVED OF PLOT
 dev.off()

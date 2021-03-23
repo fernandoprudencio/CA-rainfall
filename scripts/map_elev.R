@@ -59,21 +59,9 @@ sf.andes <- st_read(
 #'     load sp data
 sp.andes <- as(st_geometry(sf.andes), Class = "Spatial")
 
-#' IF YOU WANT TO APPLAY MEAN FILTER
-#'   run it
-# index <- raster::focal(
-#   index,
-#   w = matrix(1, 3, 3),
-#   fun = function(x) {
-#     mean(x, na.rm = T)
-#   },
-#   pad = TRUE, na.rm = FALSE
-# )
-
 #' LOAD RASTER DATA
 index <-
-    raster("data/raster/srtm_500m_filled.tif") %>%
-  # raster::crop(sf.world) %>%
+  raster("data/raster/dem/srtm_500m_filled.tif") %>%
   raster::mask(sf.world)
 
 index[index < 0] <- NA
@@ -82,22 +70,24 @@ index[index < 0] <- NA
 # intrv <- c(seq(0, .02, .005), seq(.03, .1, .01), seq(.12, .24, .02))
 # intrv.lbl <- c(0, .02, .06, .1, .16, .24)
 
-intrv <- c(seq(0, 5000, 500), 6500)
-intrv.lbl <- c(seq(0, 5000, 1000), 6500)
+intrv <- c(seq(0, 4500, 500), 6500)
+intrv.lbl <- c(seq(0, 4500, 1500), 6500)
 
 #' BUILD PLOT
 #'   Define color palette
-cb.palette <- cptcity::cpt("wkp_schwarzwald_wiki_schwarzwald_d100")
-# cptcity::find_cpt("wiki-schwarzwald-cont")
+cb.palette <- cptcity::cpt("td_DEM_screen")
+# cptcity::find_cpt("DEM_screen")
 
 #'   Define plot name
-name <- "export/elevation_map.png"
+name <- "export/elev_map.png"
 #'   Save plot
-png(name, width = 20, height = 10, units = "cm", res = 500)
+png(name, width = 20, height = 10, units = "cm", res = 500) # width = 20
 
 levelplot(index,
-  par.strip.text = list(cex = .8, lines = 1.5), # header size for each map
-  # layout = c(4, 1), # define number of row and colums
+  # main = list(
+  #   "Elevation", cex = .8, fontfamily = "Source Sans Pro",
+  #   fontface = "plain"
+  # ),
   scales = list(
     x = list(
       limits = c(-81.8, -68.2), tick.number = 4 # , tck = .2
@@ -111,11 +101,11 @@ levelplot(index,
   col.regions = cb.palette,
   margin = F,
   pretty = T,
-  maxpixels = 15e6,#15e6
+  maxpixels = 15e5, # 15e6
   at = intrv,
   colorkey = list(
-    at = intrv, height = 1, width = 1.1,
-    space = "top", tck = .3, # location of legend
+    at = intrv, height = .8, width = 1.1,
+    space = "bottom", tck = .3, # location of legend
     labels = list(at = intrv.lbl, cex = .7),
     font = list(family = "Source Sans Pro"),
     axis.line = list(lwd = 1, col = "black")
@@ -135,13 +125,37 @@ levelplot(index,
   ),
   par.xlab.text = list(fontfamily = "Source Sans Pro"),
   par.ylab.text = list(fontfamily = "Source Sans Pro"),
-  par.main.text = list(fontfamily = "Source Sans Pro"),
+  par.main.text = list(fontfamily = "Source Sans Pro", pad1 = -2),
   par.sub.text = list(fontfamily = "Source Sans Pro")
 ) +
   latticeExtra::layer(
-    sp.lines(sp.world, col = "black", lwd = .5),
+    sp.lines(sp.world, col = "black", lwd = .7),
     sp.lines(sp.andes, col = "black", lwd = .7)
   )
+
+grid::grid.text(
+  "SRTM (Elevation)",
+  y = unit(.965, "npc"),
+  rot = 0, x = unit(.5, "npc"),
+  gp = gpar(
+    fontsize = 10,
+    # fontface = "bold",
+    fontfamily = "Source Sans Pro",
+    col = "black"
+  )
+)
+
+grid::grid.text(
+  "[m]",
+  y = unit(.103, "npc"),
+  rot = 0, x = unit(.387, "npc"),
+  gp = gpar(
+    fontsize = 8,
+    # fontface = "bold",
+    fontfamily = "Source Sans Pro",
+    col = "black"
+  )
+)
 
 #' CLOSE THE SAVED OF PLOT
 dev.off()
