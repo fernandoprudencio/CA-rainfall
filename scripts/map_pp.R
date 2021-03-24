@@ -157,6 +157,42 @@ grid::grid.text(
   )
 )
 
+grid::grid.text(
+  "a)",
+  y = unit(.241, "npc"),
+  rot = 0, x = unit(.382, "npc"),
+  gp = gpar(
+    fontsize = 12,
+    # fontface = "bold",
+    fontfamily = "Source Sans Pro",
+    col = "black"
+  )
+)
+
+grid::grid.text(
+  "b)",
+  y = unit(.241, "npc"),
+  rot = 0, x = unit(.4695, "npc"),
+  gp = gpar(
+    fontsize = 12,
+    # fontface = "bold",
+    fontfamily = "Source Sans Pro",
+    col = "black"
+  )
+)
+
+grid::grid.text(
+  "c)",
+  y = unit(.241, "npc"),
+  rot = 0, x = unit(.557, "npc"),
+  gp = gpar(
+    fontsize = 12,
+    # fontface = "bold",
+    fontfamily = "Source Sans Pro",
+    col = "black"
+  )
+)
+
 #' CLOSE THE SAVED OF PLOT
 dev.off()
 

@@ -101,7 +101,7 @@ levelplot(index,
   col.regions = cb.palette,
   margin = F,
   pretty = T,
-  maxpixels = 15e5, # 15e6
+  maxpixels = 15e6, # 15e6
   at = intrv,
   colorkey = list(
     at = intrv, height = .8, width = 1.1,
@@ -151,6 +151,18 @@ grid::grid.text(
   rot = 0, x = unit(.387, "npc"),
   gp = gpar(
     fontsize = 8,
+    # fontface = "bold",
+    fontfamily = "Source Sans Pro",
+    col = "black"
+  )
+)
+
+grid::grid.text(
+  "d)",
+  y = unit(.2455, "npc"),
+  rot = 0, x = unit(.4005, "npc"),
+  gp = gpar(
+    fontsize = 14.1,
     # fontface = "bold",
     fontfamily = "Source Sans Pro",
     col = "black"
