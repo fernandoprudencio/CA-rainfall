@@ -43,7 +43,8 @@ daily_to_monthly <- function(lenght, data, start, end, ref, out) {
   stck <- raster::stack(data[n$id]) %>% sum(na.rm = T)
 
   #' re-sampling data
-  stck_rspl <- raster::resample(stck, ref)
+  stck_rspl <- stck
+  # stck_rspl <- raster::resample(stck, ref)
 
   #' name of monthly data
   name <- monthly_date[lenght]
@@ -68,7 +69,7 @@ lista <-
     pattern = ".tif", full.names = T
   )
 #'   output link
-out <- "data/raster/pp/trmm/monthly/"
+out <- "data/raster/pp/trmm/monthly/tif_world/"
 #'   get monthly data
 sapply(
   1:234,
