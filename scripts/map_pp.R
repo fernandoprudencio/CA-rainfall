@@ -88,11 +88,19 @@ intrv.lbl <- c(seq(0, 6000, 1000))
 
 #' BUILD PLOT
 #'   Define color palette
-cb.palette <- cptcity::cpt("ncl_precip_11lev")
+# cb.palette <- cptcity::cpt("ncl_precip_11lev")
 # cptcity::find_cpt("precip_11lev")
+#'   Define color palette
+cb.palette <-
+  c(
+    "#eca988", "#f7c089", "#fee7c7",# "#d8eff9",
+    "#ccedfa", "#91dcfb", "#66cff3", "#44c8fb",
+    "#00b1f1", "#009fe2", "#0088c7", "#0074a0",
+    "#005175"
+  )
 
 #'   Define plot name
-name <- "export/pp_map.png"
+name <- "export/pp_map_v2.png"
 #'   Save plot
 png(name, width = 60, height = 10, units = "cm", res = 500)
 
@@ -148,7 +156,7 @@ levelplot(index,
 grid::grid.text(
   "[mm/year]",
   y = unit(.103, "npc"),
-  rot = 0, x = unit(.387, "npc"),
+  rot = 0, x = unit(.396, "npc"),
   gp = gpar(
     fontsize = 8,
     # fontface = "bold",
@@ -160,7 +168,7 @@ grid::grid.text(
 grid::grid.text(
   "a)",
   y = unit(.241, "npc"),
-  rot = 0, x = unit(.382, "npc"),
+  rot = 0, x = unit(.394, "npc"),
   gp = gpar(
     fontsize = 12,
     # fontface = "bold",
@@ -172,7 +180,7 @@ grid::grid.text(
 grid::grid.text(
   "b)",
   y = unit(.241, "npc"),
-  rot = 0, x = unit(.4695, "npc"),
+  rot = 0, x = unit(.4735, "npc"),
   gp = gpar(
     fontsize = 12,
     # fontface = "bold",
@@ -184,7 +192,7 @@ grid::grid.text(
 grid::grid.text(
   "c)",
   y = unit(.241, "npc"),
-  rot = 0, x = unit(.557, "npc"),
+  rot = 0, x = unit(.5535, "npc"),
   gp = gpar(
     fontsize = 12,
     # fontface = "bold",
