@@ -105,7 +105,7 @@ name <- "export/pp_map_v2.png"
 png(name, width = 60, height = 10, units = "cm", res = 500)
 
 levelplot(index,
-  names.attr = c("PISCO v2p1", "TRMM 3B42RT", "GPM IMERG 3b"),
+  names.attr = c("PISCO v2p1", "GPM IMERG 3b", "TRMM 3B42RT"),
   par.strip.text = list(cex = .8, lines = 1.5), # header size for each map
   # layout = c(4, 1), # define number of row and colums
   scales = list(
